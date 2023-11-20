@@ -710,3 +710,71 @@ cat /var/log/nginx/jarkom_access.log
 ![image](https://github.com/fransiskusbenyamin/Jarkom-Modul-3-IT14-2023/assets/73869671/87fd20da-af68-4cd3-89f2-a42f04d4624b)
 ![image](https://github.com/fransiskusbenyamin/Jarkom-Modul-3-IT14-2023/assets/73869671/6e3792ad-9ada-42fe-81f9-fe2e900a338a)
 
+## No 19
+>Untuk meningkatkan performa dari Worker, coba implementasikan PHP-FPM pada Frieren, Flamme, dan Fern. Untuk testing kinerja naikkan 
+>- pm.max_children
+>- pm.start_servers
+>- pm.min_spare_servers
+>- pm.max_spare_servers
+>sebanyak tiga percobaan dan lakukan testing sebanyak 100 request dengan 10 request/second kemudian berikan hasil analisisnya pada Grimoire.
+Maka dari ini kita perlu mengganti konfigurasi PHP-FPM dengan nilai-nilai yang lebih tinggi
+
+>pm.max_children:Menentukan jumlah maksimal anak proses PHP-FPM yang dapat dibuat untuk menangani permintaan secara bersamaan.
+>pm.start_servers:Menentukan jumlah anak proses PHP-FPM yang akan dibuat saat FPM pertama kali dijalankan atau di-restart.
+>pm.min_spare_servers:Menentukan jumlah minimum anak proses yang tetap hidup dan siap menangani permintaan setelah proses FPM dimulai atau restart.
+>pm.max_spare_servers:Menentukan jumlah maksimal anak proses yang dapat tetap hidup dan siap menangani permintaan saat beban rendah.
+
+Jalankan script bash ini untuk mengganti value nilai-nilai tersebut
+```
+#!/bin/bash
+
+# Path to the PHP-FPM pool configuration file
+config_file="/etc/php/8.0/fpm/pool.d/www.conf"  # Ganti dengan versi PHP yang sesuai
+
+# Nilai baru untuk menggantikan nilai sebelumnya (disesuaikan dengan keperluan percobaan)
+new_max_children=25
+new_start_servers=6
+new_min_spare_servers=3
+new_max_spare_servers=12 
+
+# Backup the original configuration file
+cp "$config_file" "$config_file.bak"
+
+# Update the PHP-FPM configuration values
+sed -i "s/^pm\.max_children = .*/pm\.max_children = $new_max_children/" "$config_file"
+sed -i "s/^pm\.start_servers = .*/pm\.start_servers = $new_start_servers/" "$config_file"
+sed -i "s/^pm\.min_spare_servers = .*/pm\.min_spare_servers = $new_min_spare_servers/" "$config_file"
+sed -i "s/^pm\.max_spare_servers = .*/pm\.max_spare_servers = $new_max_spare_servers/" "$config_file"
+
+# Restart PHP-FPM to apply changes
+service php8.0-fpm restart
+```
+untuk melakukan testing, dapat menggunakan terminal pada client dengan perintah berikut
+```
+ab -n 100 -c 10 -p login.json -T application/json http://riegel.canyon.it14.com/api/auth/login 
+```
+karena diminta untuk melakukan tiga percobaan, akan ada tiga set nilai sebagai berikut dan dengan hasil masing-masing yang berbeda
+>Konfigurasi pertama (default)
+>-pm.max_children = 5
+>-pm.start_servers = 2
+>-pm.min_spare_servers = 1
+>-pm.max_spare_servers = 3
+![image](https://github.com/fransiskusbenyamin/Jarkom-Modul-3-IT14-2023/assets/73869671/d8299a45-381c-4e89-9a0f-513b442e1b19)
+
+>Konfigurasi kedua
+>-pm.max_children = 25
+>-pm.start_servers = 6
+>-pm.min_spare_servers = 3
+>-pm.max_spare_servers = 12
+![image](https://github.com/fransiskusbenyamin/Jarkom-Modul-3-IT14-2023/assets/73869671/28777537-686c-427a-822d-2af21ab7cacb)
+
+>Konfigurasi ketiga
+>-pm.max_children = 50
+>-pm.start_servers = 10
+>-pm.min_spare_servers = 5
+>-pm.max_spare_servers = 20
+![image](https://github.com/fransiskusbenyamin/Jarkom-Modul-3-IT14-2023/assets/73869671/b22028b5-cc5c-477c-affb-d222b4037210)
+
+## No 20
+>Nampaknya hanya menggunakan PHP-FPM tidak cukup untuk meningkatkan performa dari worker maka implementasikan Least-Conn pada Eisen. Untuk testing kinerja dari worker tersebut dilakukan sebanyak 100 request dengan 10 request/second.
+>
