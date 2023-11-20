@@ -5,8 +5,8 @@ mysql
 CREATE USER 'kelompokit14'@'%' IDENTIFIED BY 'passwordit14';
 CREATE USER 'kelompokit14'@'localhost' IDENTIFIED BY 'passwordit14';
 CREATE DATABASE dbkelompokit14;
-GRANT ALL PRIVILEGES ON *.* TO 'kelompokit14'@'%';
-GRANT ALL PRIVILEGES ON *.* TO 'kelompokit14'@'localhost';
+GRANT ALL PRIVILEGES ON dbkelompokit14.* TO 'kelompokit14'@'%';
+GRANT ALL PRIVILEGES ON dbkelompokit14.* TO 'kelompokit14'@'localhost';
 FLUSH PRIVILEGES;
 SHOW DATABASES;
 
