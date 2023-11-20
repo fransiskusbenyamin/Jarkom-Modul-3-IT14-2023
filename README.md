@@ -481,3 +481,57 @@ lynx http://192.240.4.1:8000/
 ```
 apabila berhasil kita akan dapat melihat layar ini pada terminal client
 ![image](https://github.com/fransiskusbenyamin/Jarkom-Modul-3-IT14-2023/assets/73869671/5470f2c8-6e29-4855-805c-93f305101780)
+
+## No 15
+Riegel Channel memiliki beberapa endpoint yang harus ditesting sebanyak 100 request dengan 10 request/second.
+>POST /auth/register
+
+Untuk mengirimkan request HTTP kepada server kita perlu membuat file register.json yang akan dikirimkan dalam request POST
+```
+{
+ "username": "kelompokit14",
+ "password": "passwordit14"
+}
+```
+Jalankan perintah berikut pada client
+```
+ab -n 100 -c 10 -p register.json -T application/json http://192.240.4.3:8000/api/auth/register
+```
+maka kita akan mendapatkan bahwa dari 100 request yang dikirimkan, hanya 1 yang berhasil dikarenakan server tidak memperbolehkan register pengguna dengan username yang sudah dipakai
+![image](https://github.com/fransiskusbenyamin/Jarkom-Modul-3-IT14-2023/assets/73869671/6a17da73-44ad-4484-86e6-8dc514afd7b8)
+
+## No 16
+>POST /auth/login 
+
+Sama halnya dengan nomor 15, kita perlu membuat file json untuk dikirimkan pada request HTTP 
+```
+{
+ "username": "kelompokit14",
+ "password": "passwordit14"
+}
+```
+Jalankan perintah berikut pada client
+```
+ab -n 100 -c 10 -p login.json -T application/json http://192.240.4.3:8000/api/auth/login
+```
+didapati melalui testing sebanyak 100 request, jumlah failed requestnya adalah sekitar 30 an
+![image](https://github.com/fransiskusbenyamin/Jarkom-Modul-3-IT14-2023/assets/73869671/6931787b-e0e7-4eda-a847-e63e816b1915)
+
+## No 17
+>GET /me
+disini kita ingin mendapatkan hasil testing pada GET /me yang memerlukan Authorization: Bearer Token
+Untuk mendapatkan tokennya kita perlu menjalankan ini pada client 
+```
+curl -X POST -H "Content-Type: application/json" -d @login.json http://192.240.4.3:8000/api/auth/login > login_output.txt
+```
+Lalu token yang sudah didapatkan dimasukkan ke dalam .token dengan perintah berikut 
+```
+token=$(cat login_output.txt | jq -r '.token')
+```
+lalu sesuai dengan perintah, kita juga akan melihat hasil testing dengan 100 request
+```
+ab -n 100 -c 10 -H "Authorization: Bearer $token" http://192.240.4.3:8000/api/me
+```
+![image](https://github.com/fransiskusbenyamin/Jarkom-Modul-3-IT14-2023/assets/73869671/b6b76cad-86dc-4d1f-bd9c-44cbb600a777)
+
+## No 18
