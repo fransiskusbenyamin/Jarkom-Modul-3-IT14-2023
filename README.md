@@ -25,11 +25,11 @@ Untuk test masuk ke salah satu clien contohnya Richter
 
 command:
 
-
+```
 apt update && apt-get install dnsutils -y
 dig riegel.canyon.it25.com
 dig granz.channel.it25.com 
-
+```
 
 
 ## No 2-5
@@ -45,12 +45,12 @@ Tes:
 
 Buka salah satu node klien (Sein, Start, Revolte, Richter). Seharusnya, saat pertama kali dibuka, klien harus memperoleh alamat IP seperti contoh berikut:
 
-
+```
 udhcpc: started, v1.30.1
 udhcpc: sending discover
 udhcpc: sending select for 192.240.4.14
 udhcpc: lease of 192.240.4.14 obtained, lease time 720
-
+```
 
 Artinya, klien telah berhasil mendapatkan alamat IP secara otomatis (DHCP berfungsi).
 
@@ -61,7 +61,7 @@ option domain-name-servers 192.240.1.3;
  
 Namun, jangan lupa untuk mengonfigurasi Heiter agar dapat meneruskan ke nameserver yang biasanya dilakukan dengan skrip BIND 9 berikut:
 
-
+```
 options {
     listen-on { 192.240.1.3; };  # IP Heiter
     listen-on-v6 { none; };
@@ -80,19 +80,19 @@ options {
     auth-nxdomain no;    # sesuai dengan RFC1035
     allow-query { any; };
 };
-
+```
 
 
 Untuk memeriksa konfigurasi, buka klien dan ketik:
-
+```
 `cat /etc/resolv.conf`
-
+```
 output:
 
-
+```
 root@Stark:/# cat /etc/resolv.conf
 nameserver 192.240.1.3
-
+```
 
 Ini menunjukkan bahwa nameserver telah terdaftar.
 
@@ -109,12 +109,12 @@ max-lease-time 5760;    # 96 menit dalam detik
 
 Jika membuka klien, maka:
 
-
+```
 udhcpc: started, v1.30.1
 udhcpc: sending discover
 udhcpc: sending select for 192.240.4.14
 udhcpc: lease of 192.240.4.14 obtained, lease time 720
-
+```
 
 
 ## No 6
@@ -126,9 +126,9 @@ Padaa setiap worker PHP di lakukan konfigurasi gunakan script setup.sh pada phpW
 laukan testing pada setiap worker
 
 test
-
+```
 `curl localhost`
-
+```
 outputnya akan berupa file html dari file yg sudah di download
 
 >Kepala suku dari Bredt Region memberikan resource server sebagai berikut:
@@ -139,25 +139,25 @@ aturlah agar Eisen dapat bekerja dengan maksimal, lalu lakukan testing dengan 10
 
 Tidak secara langsung, pertanyaan ini meminta kita untuk mengonfigurasi Elsen sebagai Load Balancer. Cukup jalankan skrip setup6-7.sh yang berisi konfigurasi tiga load balancer dengan tiga algoritma yang berbeda: Round Robin, Least Connection, dan IP Hash. Setelah itu, jalankan pengujian di Elsen dengan perintah:
 
-
+```
 curl localhost:81                # Untuk Algoritma Round Robin
 curl localhost:82                # Least Connection
 curl localhost:83                # IP Hash
-
+```
 
 Masuk ke Client lakukan instalasi dengan perintah berikut:
 
-
+```
 apt-get update
 apt-get install apache2-utils -y
-
+```
 
 
 Selanjutnya, untuk melakukan pengujian dengan 1000 permintaan dan 100 permintaan per detik, gunakan perintah berikut:
-
+```
 `ab -n 1000 -c 100 -k http://192.240.2.2:81/
 `
-
+```
 ![image](https://user-images.githubusercontent.com/76695790/284225471-babcea69-4071-47a3-8375-c1a1659f31e7.png)
 
 ## No 8
@@ -168,11 +168,11 @@ Grafik request per second untuk masing masing algoritma.
 Analisis (8)
 
 untuk command testnya sama 
-
+```
 ab -n 200 -c 10 -k http://192.240.2.2:81/             #Round robin
 ab -n 200 -c 10 -k http://192.240.2.2:82/             #Least con
 ab -n 200 -c 10 -k http://192.240.2.2:83/             #IP Hash
-
+```
 Hasil analisisnya bisa dilihat di link berikut 
 https://docs.google.com/document/d/1uNq9yQKSiKo7Ih6TIGgbPdEBtnkQ4ohjjDuTmYrWz_g/edit
 
@@ -181,7 +181,7 @@ https://docs.google.com/document/d/1uNq9yQKSiKo7Ih6TIGgbPdEBtnkQ4ohjjDuTmYrWz_g/
 
 pada bagian 
 
-
+```
 upstream backend_round_robin {
     server 192.240.3.1; <-------- di comment saja untuk 1 worker 2 worker dan 3 worker
     server 192.240.3.2;
@@ -210,7 +210,7 @@ server {
             rewrite ^/its(.*)$ https://www.its.ac.id$1 permanent;
     }
 }
-
+```
 dan lakukan test seperti biasa sudah ada di grimore
 https://docs.google.com/document/d/1uNq9yQKSiKo7Ih6TIGgbPdEBtnkQ4ohjjDuTmYrWz_g/edit
 
@@ -218,16 +218,16 @@ https://docs.google.com/document/d/1uNq9yQKSiKo7Ih6TIGgbPdEBtnkQ4ohjjDuTmYrWz_g/
 >Selanjutnya coba tambahkan konfigurasi autentikasi di LB dengan dengan kombinasi username: “netics” dan password: “ajkyyy”, dengan yyy merupakan kode kelompok. Terakhir simpan file “htpasswd” nya di /etc/nginx/rahasisakita/ (10)
 
 untuk apply, masuk ke Elsen lalu run setup.sh dan run no12.sh pada Himmel dan restart client (sein dkk)
-
+```
 curl -u netics:ajkit25 localhost:81                  (Pada Elsen)
 curl -u netics:ajkti25 192.240.2.2:81                 (pada Sein outputnya harusnya sukses) 
 curl -u netics:ajkti25 192.240.2.2:81		(Pada Stark karena IP nya random jadi forbidden)
-
+```
 
 ## No 11
 >Lalu buat untuk setiap request yang mengandung /its akan di proxy passing menuju halaman https://www.its.ac.id. (11) hint: (proxy_pass)
 
-
+```
 location /its {
             proxy_pass https://www.its.ac.id;
             rewrite ^/its(.*)$ https://www.its.ac.id$1 permanent;
@@ -238,7 +238,7 @@ location /its {
 apt install lynx
 curl -u netics:ajkti25 -i 10.72.2.2:81/its 		 (pada Sein outputnya harusnya sukses)
 lynx 10.72.2.2:81/its 
-
+```
 
 
 ## No 12
@@ -246,7 +246,7 @@ lynx 10.72.2.2:81/its
 
 Pada himmel
 
-
+```
     hardware ethernet 92:3a:3c:c7:ed:98;
     fixed-address 192.240.3.69;
     option host-name "Revolter";
@@ -257,17 +257,17 @@ host Sein {
     fixed-address 192.240.4.167;
     option host-name "Sein";
 }
-
+```
 
 pada Elsen
-
+```
 allow 127.0.0.1;
         allow 192.240.3.69;
         allow 192.240.3.70;
         allow 192.240.4.167;
         allow 192.240.4.168;
         deny all;
-
+```
 ## No 13
 Karena para petualang kehabisan uang, mereka kembali bekerja untuk mengatur riegel.canyon.yyy.com.
 >Semua data yang diperlukan, diatur pada Denken dan harus dapat diakses oleh Frieren, Flamme, dan Fern.
@@ -321,9 +321,9 @@ SHOW DATABASES;
 nano /etc/mysql/my.cnf
 
 #tambah baris paling bawah lalu save
-    [mysqld]
-    skip-networking=0
-    skip-bind-address
+[mysqld]
+skip-networking=0
+skip-bind-address
 
 # ketik
 service mysql restart
@@ -336,4 +336,148 @@ mysql --host=192.240.2.3 --port=3306 --user=kelompokit14 --password
 lalu masukkan passwordnya = passwordit14, dan apabila sudah muncul pesan seperti ini, maka Frieren, Fiamme, dan Fern sudah bisa mengakses data pada database di Denken
 ![image](https://github.com/fransiskusbenyamin/Jarkom-Modul-3-IT14-2023/assets/73869671/e3ca9817-7173-41e5-870d-f2577c6f9a56)
 
+## No 14
+>Frieren, Flamme, dan Fern memiliki Riegel Channel sesuai dengan quest guide berikut. Jangan lupa melakukan instalasi PHP8.0 dan Composer
 
+Pada nomor 14 kita diminta untuk melakukan deploy laman laravel untuk menghandle HTTP Request (register, login, dan me)
+untuk itu, kita perlu melakukan beberapa konfigurasi untuk menjalankan laravel server dengan setup sebagai berikut (setup.sh)
+```
+apt-get update
+apt install nginx wget zip htop -y
+apt-get install -y lsb-release ca-certificates apt-transport-https software-properties-common gnupg2
+
+# Add Sury.org repository key
+wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
+
+# Add Sury.org repository to sources.list
+echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | tee /etc/apt/sources.list.d/php.list
+
+apt-get update
+
+apt-get install php8.0-mbstring php8.0-xml php8.0-cli php8.0-common php8.0-intl php8.0-opcache php8.0-readline php8.0-mysql php8.0-fpm php8.0-curl mariadb-client -y
+
+curl -L --insecure https://getcomposer.org/download/2.0.13/composer.phar -o composer.phar
+chmod +x composer.phar
+mv composer.phar /usr/bin/composer
+
+wget -O '/var/www/jarkom.zip' 'https://github.com/martuafernando/laravel-praktikum-jarkom/archive/refs/heads/main.zip'
+unzip -o /var/www/jarkom.zip -d /var/www/
+rm /var/www/jarkom.zip
+
+echo '
+APP_NAME=Laravel
+APP_ENV=local
+APP_KEY=
+APP_DEBUG=true
+APP_URL=http://localhost
+
+LOG_CHANNEL=stack
+LOG_DEPRECATIONS_CHANNEL=null
+LOG_LEVEL=debug
+
+DB_CONNECTION=mysql
+DB_HOST=192.240.2.3
+DB_PORT=3306
+DB_DATABASE=dbkelompokit14
+DB_USERNAME=kelompokit14
+DB_PASSWORD=passwordit14
+
+BROADCAST_DRIVER=log
+CACHE_DRIVER=file
+FILESYSTEM_DISK=local
+QUEUE_CONNECTION=sync
+SESSION_DRIVER=file
+SESSION_LIFETIME=120
+
+MEMCACHED_HOST=127.0.0.1
+
+REDIS_HOST=127.0.0.1
+REDIS_PASSWORD=null
+REDIS_PORT=6379
+
+MAIL_MAILER=smtp
+MAIL_HOST=mailpit
+MAIL_PORT=1025
+MAIL_USERNAME=null
+MAIL_PASSWORD=null
+MAIL_ENCRYPTION=null
+MAIL_FROM_ADDRESS="hello@example.com"
+MAIL_FROM_NAME="${APP_NAME}"
+
+AWS_ACCESS_KEY_ID=
+AWS_SECRET_ACCESS_KEY=
+AWS_DEFAULT_REGION=us-east-1
+AWS_BUCKET=
+AWS_USE_PATH_STYLE_ENDPOINT=false
+
+PUSHER_APP_ID=
+PUSHER_APP_KEY=
+PUSHER_APP_SECRET=
+PUSHER_HOST=
+PUSHER_PORT=443
+PUSHER_SCHEME=https
+PUSHER_APP_CLUSTER=mt1
+
+VITE_PUSHER_APP_KEY="${PUSHER_APP_KEY}"
+VITE_PUSHER_HOST="${PUSHER_HOST}"
+VITE_PUSHER_PORT="${PUSHER_PORT}"
+VITE_PUSHER_SCHEME="${PUSHER_SCHEME}"
+VITE_PUSHER_APP_CLUSTER="${PUSHER_APP_CLUSTER}"
+' > /var/www/laravel-praktikum-jarkom-main/.env
+
+cd /var/www/laravel-praktikum-jarkom-main
+
+composer update
+composert insall
+php artisan migrate:fresh
+php artisan db:seed --class=AiringsTableSeeder
+php artisan key:generate
+php artisan jwt:secret
+
+cd ~
+
+echo '
+ server {
+
+ 	listen 8000;
+
+ 	root /var/www/laravel-praktikum-jarkom-main/public;
+
+ 	index index.php index.html index.htm;
+ 	server_name _;
+
+ 	location / {
+ 			try_files $uri $uri/ /index.php?$query_string;
+ 	}
+
+ 	# pass PHP scripts to FastCGI server
+ 	location ~ \.php$ {
+ 	include snippets/fastcgi-php.conf;
+ 	fastcgi_pass unix:/var/run/php/php8.0-fpm.sock;
+ 	}
+
+    location ~ /\.ht {
+ 			deny all;
+ 	}
+
+ 	error_log /var/log/nginx/jarkom_error.log;
+ 	access_log /var/log/nginx/jarkom_access.log;
+ }
+' > /etc/nginx/sites-available/laravel-praktikum-jarkom-main
+
+ln -s --force /etc/nginx/sites-available/laravel-praktikum-jarkom-main /etc/nginx/sites-enabled/laravel-praktikum-jarkom-main
+
+chown -R www-data.www-data /var/www/laravel-praktikum-jarkom-main/storage
+
+rm /etc/nginx/sites-enabled/default
+
+service nginx restart
+service php8.0-fpm stop
+service php8.0-fpm start
+```
+setelah menjalankan script ini, kita akan bisa mencoba mengakses server melalui client menggunakan lynx (mari kita coba dari client Sein)
+```
+lynx http://192.240.4.1:8000/
+```
+apabila berhasil kita akan dapat melihat layar ini pada terminal client
+![image](https://github.com/fransiskusbenyamin/Jarkom-Modul-3-IT14-2023/assets/73869671/5470f2c8-6e29-4855-805c-93f305101780)
