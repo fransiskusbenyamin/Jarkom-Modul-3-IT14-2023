@@ -755,26 +755,34 @@ ab -n 100 -c 10 -p login.json -T application/json http://riegel.canyon.it14.com/
 ```
 karena diminta untuk melakukan tiga percobaan, akan ada tiga set nilai sebagai berikut dan dengan hasil masing-masing yang berbeda
 >Konfigurasi pertama (default)
->-pm.max_children = 5
->-pm.start_servers = 2
->-pm.min_spare_servers = 1
->-pm.max_spare_servers = 3
+>- pm.max_children = 5
+>- pm.start_servers = 2
+>- pm.min_spare_servers = 1
+>- pm.max_spare_servers = 3
 ![image](https://github.com/fransiskusbenyamin/Jarkom-Modul-3-IT14-2023/assets/73869671/d8299a45-381c-4e89-9a0f-513b442e1b19)
 
 >Konfigurasi kedua
->-pm.max_children = 25
->-pm.start_servers = 6
->-pm.min_spare_servers = 3
->-pm.max_spare_servers = 12
+>- pm.max_children = 25
+>- pm.start_servers = 6
+>- pm.min_spare_servers = 3
+>- pm.max_spare_servers = 12
 ![image](https://github.com/fransiskusbenyamin/Jarkom-Modul-3-IT14-2023/assets/73869671/28777537-686c-427a-822d-2af21ab7cacb)
 
 >Konfigurasi ketiga
->-pm.max_children = 50
->-pm.start_servers = 10
->-pm.min_spare_servers = 5
->-pm.max_spare_servers = 20
+>- pm.max_children = 50
+>- pm.start_servers = 10
+>- pm.min_spare_servers = 5
+>- pm.max_spare_servers = 20
 ![image](https://github.com/fransiskusbenyamin/Jarkom-Modul-3-IT14-2023/assets/73869671/b22028b5-cc5c-477c-affb-d222b4037210)
 
 ## No 20
 >Nampaknya hanya menggunakan PHP-FPM tidak cukup untuk meningkatkan performa dari worker maka implementasikan Least-Conn pada Eisen. Untuk testing kinerja dari worker tersebut dilakukan sebanyak 100 request dengan 10 request/second.
->
+
+Kita sudah mengimplementasikan Least-Conn pada Eisen, yang dijalankan pada saat mengerjakan nomor 18.
+Untuk melakukan percobaan, kita dapat melakukan perintah sebagai berikut
+```
+ab -n 100 -c 10 -k http://localhost:84/    #jika pada else
+```
+Kinerja didapatkan sebagai berikut
+![image](https://github.com/fransiskusbenyamin/Jarkom-Modul-3-IT14-2023/assets/73869671/c152fd19-da93-46fa-9a3b-c540ad2e4b3a)
+![image](https://github.com/fransiskusbenyamin/Jarkom-Modul-3-IT14-2023/assets/73869671/4ee4cda0-bcb8-43f2-98c3-67c3175295a1)
