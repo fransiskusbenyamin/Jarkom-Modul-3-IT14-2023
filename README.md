@@ -267,3 +267,73 @@ allow 127.0.0.1;
         allow 192.240.4.167;
         allow 192.240.4.168;
         deny all;
+
+## No 13
+Karena para petualang kehabisan uang, mereka kembali bekerja untuk mengatur riegel.canyon.yyy.com.
+>Semua data yang diperlukan, diatur pada Denken dan harus dapat diakses oleh Frieren, Flamme, dan Fern.
+
+untuk apply, buka terminal di Denken lalu run setup.sh
+```
+#!/bin/bash
+
+echo nameserver 192.168.122.1 > /etc/resolv.conf
+apt update && apt install ne -y
+
+# masukan ke ~/.bashrc
+echo "echo nameserver 192.168.122.1 > /etc/resolv.conf
+apt update && apt install ne -y
+" > ~/.bashrc
+
+apt remove --purge *mysql* -y
+apt remove --purge *mariadb* -y
+rm -rf /etc/mysql /var/lib/mysql
+apt autoremove -y
+apt autoclean -y
+
+apt-get install mariadb-server -y
+
+service mysql start
+```
+
+
+dan lakukan langkah sesuai notes.txt pada main/Denken (instruksi juga ada di bawah)
+```
+# ketik command dibawah
+mysql 
+
+# ketik di dalam shell mysql
+CREATE USER 'kelompokit14'@'%' IDENTIFIED BY 'passwordit14';
+CREATE USER 'kelompokit14'@'localhost' IDENTIFIED BY 'passwordit14';
+CREATE DATABASE dbkelompokit14;
+GRANT ALL PRIVILEGES ON dbkelompokit14.* TO 'kelompokit14'@'%';
+GRANT ALL PRIVILEGES ON dbkelompokit14.* TO 'kelompokit14'@'localhost';
+FLUSH PRIVILEGES;
+SHOW DATABASES;
+
+# setelag selesai 
+ctrl - c
+
+
+mysql -u kelompokit14 -ppasswordit14
+SHOW DATABASES;
+
+# ketik
+nano /etc/mysql/my.cnf
+
+#tambah baris paling bawah lalu save
+    [mysqld]
+    skip-networking=0
+    skip-bind-address
+
+# ketik
+service mysql restart
+```
+
+untuk memeriksa apakah database sudah bisa diakses, kita lakukan testing pada terminal salah satu worker laravel (Frieren, Fiamme, atau Fern)
+```
+mysql --host=192.240.2.3 --port=3306 --user=kelompokit14 --password
+```
+lalu masukkan passwordnya = passwordit14, dan apabila sudah muncul pesan seperti ini, maka Frieren, Fiamme, dan Fern sudah bisa mengakses data pada database di Denken
+![image](https://github.com/fransiskusbenyamin/Jarkom-Modul-3-IT14-2023/assets/73869671/e3ca9817-7173-41e5-870d-f2577c6f9a56)
+
+
