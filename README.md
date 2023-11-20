@@ -2,8 +2,9 @@
 Laporan Resmi Praktikum Komunikasi Data dan Jaringan Komputer - Modul 3 - Kelompok IT 14
 
 # Modul 3 Jarkom IT14
-* Moh. Sulthan Arief Rahmatullah
-* Fransiskus Benyamin
+* Moh. Sulthan Arief Rahmatullah		5027211045
+* Fransiskus Benyamin Sitompul		5027211021
+
 
 ## Pre-Requiresite
 Lakukan konfigurasi topologi sebagai berikut
@@ -157,7 +158,7 @@ Selanjutnya, untuk melakukan pengujian dengan 1000 permintaan dan 100 permintaan
 `ab -n 1000 -c 100 -k http://192.240.2.2:81/
 `
 
-![image](https://github.com/ramasedang/Jarkom-Modul-3-it25-2023/assets/76695790/babcea69-4071-47a3-8375-c1a1659f31e7)
+![image](https://user-images.githubusercontent.com/76695790/284225471-babcea69-4071-47a3-8375-c1a1659f31e7.png)
 
 ## No 8
 >Karena diminta untuk menuliskan grimoire, buatlah analisis hasil testing dengan 200 request dan 10 request/second masing-masing algoritma Load Balancer dengan ketentuan sebagai berikut:
